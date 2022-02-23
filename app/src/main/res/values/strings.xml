@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WaveCharge</string>
+    <string name="xposeddescription">Enable the wave charge animation in MIUI.</string>
+</resources>
