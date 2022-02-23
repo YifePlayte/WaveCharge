@@ -10,10 +10,10 @@ class XposedInit : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         EzXHelperInit.initHandleLoadPackage(lpparam)
         when (lpparam.packageName) {
-            "com.android.systemui" ->
-                supportWaveChargeAnimationHook(lpparam)
+            "com.android.systemui" -> supportWaveChargeAnimationHook(lpparam)
         }
     }
+
     private fun supportWaveChargeAnimationHook(lpparam: XC_LoadPackage.LoadPackageParam) {
         findMethod("com.android.keyguard.charge.ChargeUtils") {
             name == "supportWaveChargeAnimation"
@@ -27,7 +27,7 @@ class XposedInit : IXposedHookLoadPackage {
                     "com.android.keyguard.charge.container.MiuiChargeContainerView",
                     "com.android.keyguard.charge.view"
                 )
-                for(i in stackElement.indices) {
+                for (i in stackElement.indices) {
                     //XposedBridge.log("Dump Stack " + i + ": " + stackElement[i].className + "--" + stackElement[i].methodName)
                     when {
                         stackElement[i].className in classTrue -> {
