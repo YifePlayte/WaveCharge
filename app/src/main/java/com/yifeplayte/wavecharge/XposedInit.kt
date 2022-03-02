@@ -4,6 +4,7 @@ import com.github.kyuubiran.ezxhelper.init.EzXHelperInit
 import com.github.kyuubiran.ezxhelper.utils.findMethod
 import com.github.kyuubiran.ezxhelper.utils.hookMethod
 import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
 class XposedInit : IXposedHookLoadPackage {
@@ -37,6 +38,13 @@ class XposedInit : IXposedHookLoadPackage {
                     }
                 }
                 param.result = mResult
+            }
+        }
+        findMethod("com.android.keyguard.charge.wave.WaveView") {
+            name == "updateWaveHeight"
+        }.hookMethod {
+            after { param ->
+                XposedHelpers.setIntField(param.thisObject, "mWaveXOffset", 0)
             }
         }
     }
