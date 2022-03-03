@@ -4,6 +4,7 @@ import com.github.kyuubiran.ezxhelper.init.EzXHelperInit
 import com.github.kyuubiran.ezxhelper.utils.findMethod
 import com.github.kyuubiran.ezxhelper.utils.hookMethod
 import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -25,14 +26,14 @@ class XposedInit : IXposedHookLoadPackage {
                 var mResult = false
                 val classTrue = setOf(
                     "com.android.keyguard.charge.ChargeUtils",
-                    "com.android.keyguard.charge.container.MiuiChargeContainerView",
-                    "com.android.keyguard.charge.view"
+                    "com.android.keyguard.charge.container.MiuiChargeContainerView"
                 )
                 for (i in stackElement.indices) {
                     //XposedBridge.log("Dump Stack " + i + ": " + stackElement[i].className + "--" + stackElement[i].methodName)
                     when {
                         stackElement[i].className in classTrue -> {
                             mResult = true
+                            XposedBridge.log("WaveCharge: Hook supportWaveChargeAnimation for " + stackElement[i].className + " success!")
                             break
                         }
                     }
@@ -45,7 +46,9 @@ class XposedInit : IXposedHookLoadPackage {
         }.hookMethod {
             after { param ->
                 XposedHelpers.setIntField(param.thisObject, "mWaveXOffset", 0)
+                XposedBridge.log("WaveCharge: Hook updateWaveHeight success!")
             }
         }
+        XposedBridge.log("WaveCharge: Hook success!")
     }
 }
