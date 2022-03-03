@@ -21,8 +21,8 @@ class XposedInit : IXposedHookLoadPackage {
             name == "supportWaveChargeAnimation"
         }.hookMethod {
             after { param ->
-                var ex = Throwable()
-                var stackElement = ex.stackTrace
+                val ex = Throwable()
+                val stackElement = ex.stackTrace
                 var mResult = false
                 val classTrue = setOf(
                     "com.android.keyguard.charge.ChargeUtils",
@@ -30,8 +30,8 @@ class XposedInit : IXposedHookLoadPackage {
                 )
                 for (i in stackElement.indices) {
                     //XposedBridge.log("Dump Stack " + i + ": " + stackElement[i].className + "--" + stackElement[i].methodName)
-                    when {
-                        stackElement[i].className in classTrue -> {
+                    when(stackElement[i].className) {
+                         in classTrue -> {
                             mResult = true
                             XposedBridge.log("WaveCharge: Hook supportWaveChargeAnimation for " + stackElement[i].className + " success!")
                             break
